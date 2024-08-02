@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ object.title }}</title>
-</head>
-<body>
-    <h2>{{ object.title }}</h2>
-    <p>{{ object.content }}</p>
-    <p>{{ object.pub_date }}</p>
-    <p>В архиве: {{ object.archive_status }}</p>
-</body>
+    <h1>{{ news.title }}</h1>
+    <p>{{ news.content }}</p>
+    <hr>
+    <h2>Комментарии</h2>
+    <ul>
+    {% for comment in comments %}
+        <li>{{ comment.user_name }}: {{ comment.coment }}</li>
+    {% endfor %}
+    </ul>
+    <form action="{% url 'news_detail' news.pk %}" method="post">
+        {% csrf_token %}
+        <label for="user_name">Автор:</label>
+        <input type="text" name="author" id="user_name">
+        <label for="comment">Комментарий:</label>
+        <textarea name="comment" id="comment"></textarea>
+        <input type="submit" value="Комментировать">
+    </form>
 </html>
