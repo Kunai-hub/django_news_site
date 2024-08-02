@@ -18,8 +18,8 @@
     </h2>
     <ul>
     {% for comment in comments %}
-        <li>{
-            { comment.user_name }}: {{ comment.comment }}<br>
+        <li>
+            {{ comment.user_name }}: {{ comment.comment }}<br>
             Дата публикации: {{ comment.pub_date }}
         </li>
         <br>
