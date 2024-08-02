@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список новостей</title>
+</head>
+<body>
+    <h1>Новости</h1>
+    <ul>
+        {% for news in news_list %}
+            <li>
+                <p>
+                    <a href='{{ news.id }}'>{{ news.title }}</a>
+                </p>
+                <p>
+                    Дата публикации: {{ news.pub_date }}
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
