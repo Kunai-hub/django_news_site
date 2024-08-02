@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<h1>Изменение новости</h1>
+<h1>
+    Изменение новости
+</h1>
 <form action="{% url 'news_update' news.pk %}" method="post">
     {% csrf_token %}
-    <label for="title">Название:</label>
+    <label for="title">
+        Название:
+    </label>
     <input type="text" name="title" id="title" value="{{ news.title }}">
-    <label for="content">Содержание:</label>
+    <label for="content">
+        Содержание:
+    </label>
     <textarea name="content" id="content">{{ news.content }}</textarea>
     <input type="submit" value="Изменить">
 </form>

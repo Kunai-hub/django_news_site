@@ -1,19 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-    <h1>{{ news.title }}</h1>
-    <p>{{ news.content }}</p>
+    <h1>
+        {{ news.title }}
+    </h1>
+    <p>
+        {{ news.content }}
+    </p>
+    <p>
+        Дата публикации: {{ news.pub_date }}
+    </p>
+    <p>
+        Дата изменения: {{ news.edit_date }}
+    </p>
     <hr>
-    <h2>Комментарии</h2>
+    <h2>
+        Комментарии
+    </h2>
     <ul>
     {% for comment in comments %}
-        <li>{{ comment.user_name }}: {{ comment.coment }}</li>
+        <li>{
+            { comment.user_name }}: {{ comment.comment }}<br>
+            Дата публикации: {{ comment.pub_date }}
+        </li>
+        <br>
     {% endfor %}
     </ul>
     <form action="{% url 'news_detail' news.pk %}" method="post">
         {% csrf_token %}
-        <label for="user_name">Автор:</label>
-        <input type="text" name="author" id="user_name">
-        <label for="comment">Комментарий:</label>
+        <label for="user_name">
+            Автор:
+        </label>
+        <input type="text" name="user_name" id="user_name">
+        <label for="comment">
+            Комментарий:
+        </label>
         <textarea name="comment" id="comment"></textarea>
         <input type="submit" value="Комментировать">
     </form>
