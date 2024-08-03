@@ -25,3 +25,6 @@ class Comments(models.Model):
 
     def __str__(self):
         return self.comment
+
+    class Meta:
+        ordering = ['pub_date']
