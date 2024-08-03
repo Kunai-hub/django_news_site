@@ -7,17 +7,28 @@ class CommentsInline(admin.TabularInline):
 
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'pub_date']
+    list_display = ['id', 'title', 'pub_date', 'status']
+    actions = ['mark_as_active', 'mark_as_inactive']
     search_fields = ['title']
+    list_filter = ['status']
     inlines = [CommentsInline]
     fieldsets = (
         ('Название и содержание', {
             'fields': ('title', 'content')
         }),
-        ('Архив', {
-            'fields': ('archive_status',)
+        ('Статус', {
+            'fields': ('status',)
         })
     )
+
+    def mark_as_active(self, request, queryset):
+        queryset.update(status='a')
+
+    def mark_as_inactive(self, request, queryset):
+        queryset.update(status='i')
+
+    mark_as_active.short_description = 'Перевести в статус \'Активна\''
+    mark_as_inactive.short_description = 'Перевести в статус \'Неактивна\''
 
 
 class CommentsAdmin(admin.ModelAdmin):
