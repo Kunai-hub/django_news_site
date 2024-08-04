@@ -9,6 +9,15 @@
         <h2>
             Добро пожаловать на сайт, {{ request.user.username }}
         </h2>
+        <p>
+            Дата рождения: {{ request.user.birthday }}
+        </p>
+        <p>
+            Город проживания: {{ request.user.city }}
+        </p>
+        <p>
+            Номер телефона: {{ request.user.phone }}
+        </p>
         <a href="{% url 'logout_user' %}">
             Выйти из системы
         </a>

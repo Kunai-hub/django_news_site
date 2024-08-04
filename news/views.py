@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import News, Comments
+from .models import News, Comments, Profile
 from .forms import AuthForm, RegisterForm
 
 
@@ -125,7 +125,16 @@ def register_user(request):
         form = RegisterForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            user = form.save()
+            birthday = form.cleaned_data.get('birthday')
+            city = form.cleaned_data.get('city')
+            phone = form.cleaned_data.get('phone')
+            Profile.objects.create(
+                user=user,
+                birthday=birthday,
+                city=city,
+                phone=phone
+            )
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)

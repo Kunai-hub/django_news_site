@@ -1,5 +1,4 @@
-from datetime import timezone
-
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -32,3 +31,10 @@ class Comments(models.Model):
 
     class Meta:
         ordering = ['pub_date']
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    birthday = models.DateField(null=True, blank=True)
+    city = models.CharField(max_length=50, blank=True)
+    phone = models.CharField(max_length=16, null=True, blank=True)

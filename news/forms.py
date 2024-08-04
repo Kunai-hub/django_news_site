@@ -20,6 +20,9 @@ class RegisterForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Ваше имя')
     last_name = forms.CharField(max_length=30, required=False, help_text='Ваша фамилия')
     email = forms.EmailField(required=False, help_text='Ваша электронная почта')
+    birthday = forms.DateField(required=True, help_text='Ваша дата рождения')
+    city = forms.CharField(required=False, help_text='Ваш город')
+    phone = forms.CharField(required=True, help_text='Ваш номер телефона')
 
     class Meta:
         model = User
