@@ -1,9 +1,14 @@
+from datetime import datetime
+
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import News, Comments
+from .forms import AuthForm
 
 
 class NewsListView(View):
@@ -62,3 +67,45 @@ class NewsUpdateView(LoginRequiredMixin, View):
         news.edit_date = timezone.now()
         news.save()
         return redirect('news_list')
+
+
+def login_user(request):
+    now = datetime.now()
+    hour_now = now.hour
+
+    if request.method == 'POST':
+        user_form = AuthForm(request.POST)
+
+        if 8 < hour_now < 22:
+
+            if user_form.is_valid():
+                username = user_form.cleaned_data['username']
+                password = user_form.cleaned_data['password']
+                user = authenticate(request, username=username, password=password)
+
+                if user:
+
+                    if user.is_active:
+
+                        if user.is_superuser:
+                            user_form.add_error('__all__', 'Ошибка! Запрещен вход администраторам!')
+                        else:
+                            login(request, user)
+                            return HttpResponse('Вы успешно вошли в систему!')
+                    else:
+                        user_form.add_error('__all__', 'Ошибка! Пользователь неактивен!')
+                else:
+                    user_form.add_error('__all__', 'Ошибка! Проверьте правильность логина или пароля!')
+        else:
+            user_form.add_error('__all__', 'Ошибка! Запрещен вход на сайт с 22:00 до 08:00')
+    else:
+        user_form = AuthForm()
+
+    context = {
+        'form': user_form
+    }
+
+    return render(request,
+                  'news/login_user.html',
+                  context=context
+                  )
