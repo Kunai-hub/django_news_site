@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -31,7 +31,10 @@ class NewsDetailView(View):
 
     def post(self, request, pk):
         news = News.objects.get(pk=pk)
-        author = request.POST['user_name']
+        if request.user.is_authenticated:
+            author = request.user.username
+        else:
+            author = request.POST['user_name']
         comment = request.POST['comment']
         Comments.objects.create(news=news, user_name=author, comment=comment)
         return redirect('news_detail', pk=pk)
@@ -109,3 +112,8 @@ def login_user(request):
                   'news/login_user.html',
                   context=context
                   )
+
+
+def logout_user(request):
+    logout(request)
+    return HttpResponse('Вы успешно вышли из учетной записи!')

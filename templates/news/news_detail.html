@@ -19,22 +19,40 @@
     <ul>
     {% for comment in comments %}
         <li>
-            {{ comment.user_name }}: {{ comment.comment }}<br>
+            {% if comment.user_name in user.username%}
+                {{ comment.user_name }}: {{ comment.comment }}<br>
+            {% else %}
+                {{ comment.user_name }} (аноним): {{ comment.comment }}<br>
+            {% endif %}
             Дата публикации: {{ comment.pub_date }}
         </li>
         <br>
     {% endfor %}
     </ul>
-    <form action="{% url 'news_detail' news.pk %}" method="post">
-        {% csrf_token %}
-        <label for="user_name">
-            Автор:
-        </label>
-        <input type="text" name="user_name" id="user_name">
-        <label for="comment">
-            Комментарий:
-        </label>
-        <textarea name="comment" id="comment"></textarea>
-        <input type="submit" value="Комментировать">
-    </form>
+    {% if request.user.is_authenticated %}
+        <form action="{% url 'news_detail' news.pk %}" method="post">
+            {% csrf_token %}
+            <label for="user_name">
+                Автор: '{{ request.user.username }}'
+            </label>
+            <label for="comment">
+                Комментарий:
+            </label>
+            <textarea name="comment" id="comment"></textarea>
+            <input type="submit" value="Комментировать">
+        </form>
+    {% else %}
+        <form action="{% url 'news_detail' news.pk %}" method="post">
+            {% csrf_token %}
+            <label for="user_name">
+                Автор: 
+            </label>
+            <input type="text" name="user_name" id="user_name">
+            <label for="comment">
+                Комментарий:
+            </label>
+            <textarea name="comment" id="comment"></textarea>
+            <input type="submit" value="Комментировать">
+        </form>
+    {% endif %}
 </html>
