@@ -8,7 +8,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import News, Comments
-from .forms import AuthForm
+from .forms import AuthForm, RegisterForm
 
 
 class NewsListView(View):
@@ -117,3 +117,22 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return HttpResponse('Вы успешно вышли из учетной записи!')
+
+
+def register_user(request):
+
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = RegisterForm()
+    return render(request,
+                  'news/register_user.html',
+                  context={'form': form})
