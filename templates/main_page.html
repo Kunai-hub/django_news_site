@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+</head>
+<body>
+    {% if request.user.is_authenticated %}
+        <h2>
+            Добро пожаловать на сайт, {{ request.user.username }}
+        </h2>
+    {% else %}
+        <h3>
+            Вы не авторизованны на нашем сайте.
+        </h3>
+        <a href="{% url 'login_user' %}">
+            Войти
+        </a>
+    {% endif %}
+</body>
+</html>
