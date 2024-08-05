@@ -8,7 +8,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import News, Comments, Profile
-from .forms import AuthForm, RegisterForm
+from .forms import AuthForm, RegisterForm, UploadFileForm
 
 
 class NewsListView(View):
@@ -144,4 +144,24 @@ def register_user(request):
         form = RegisterForm()
     return render(request,
                   'news/register_user.html',
+                  context={'form': form})
+
+
+def upload_file(request):
+
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            file = request.FILES['file']
+            stopwords = ['cat', 'dog']
+            filedata = file.read()
+            if any(word.encode('utf-8') in filedata for word in stopwords):
+                return HttpResponse('Ошибка! Файл не прошёл проверку!')
+            else:
+                return HttpResponse(content=file.name, status=200)
+    else:
+        form = UploadFileForm()
+    return render(request,
+                  'news/upload_file.html',
                   context={'form': form})

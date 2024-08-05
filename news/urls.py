@@ -1,7 +1,7 @@
 from django.urls import path
 
 from news.views import NewsListView, NewsDetailView, NewsCreateView, NewsUpdateView, login_user, logout_user, \
-    register_user
+    register_user, upload_file
 
 urlpatterns = [
     path('', NewsListView.as_view(), name='news_list'),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('users/login/', login_user, name='login_user'),
     path('users/logout/', logout_user, name='logout_user'),
     path('users/register/', register_user, name='register_user'),
+    path('files/upload_file/', upload_file, name='upload_file'),
 ]
