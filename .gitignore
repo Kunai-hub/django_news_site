@@ -1,0 +1,5 @@
+**/.DS_STORE
+/.idea
+/django_news_site/.env
+/db.sqlite3
+**/__pycache__
